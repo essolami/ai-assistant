@@ -6,6 +6,16 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+:root {
+  --warning: 38 92% 50%;
+  --warning-foreground: 48 96% 89%;
+}
+
+.dark {
+  --warning: 48 96% 89%;
+  --warning-foreground: 38 92% 50%;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
