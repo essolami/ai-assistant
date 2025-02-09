@@ -4,8 +4,22 @@ import "./globals.css";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { MainHeader } from "@/components/shared/main-header";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/shared/app-sidebar";
+import { Separator } from "@/components/ui/separator";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { MainFooter } from "@/components/shared/main-footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,13 +54,23 @@ export default function RootLayout({
         >
           <SidebarProvider>
             <AppSidebar />
-
-            <div className="w-full flex flex-col m-2">
-              <MainHeader />
-              <main className="h-full p-2 rounded-md border mt-2">
-                {children}
-              </main>
-            </div>
+            <SidebarInset>
+              <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+                <SidebarTrigger className="-ml-1" />
+                <Separator orientation="vertical" className="mr-2 h-4" />
+                <Breadcrumb>
+                  <BreadcrumbList>
+                    <BreadcrumbItem>
+                      <BreadcrumbPage className="line-clamp-1">
+                        Project Management & Task Tracking
+                      </BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </BreadcrumbList>
+                </Breadcrumb>
+              </header>
+              <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
+              <MainFooter />
+            </SidebarInset>
           </SidebarProvider>
         </ThemeProvider>
       </body>
