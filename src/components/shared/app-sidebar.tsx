@@ -90,7 +90,7 @@ const data = {
   favorites: [
     {
       name: "Project Management & Task Tracking",
-      url: "#",
+      url: "/assist/project_management_task_tracking",
       emoji: "📊",
     },
     {
