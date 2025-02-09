@@ -1,13 +1,14 @@
 export const siteConfig = {
-  name: "shadcn/ui",
-  url: "https://ui.shadcn.com",
-  ogImage: "https://ui.shadcn.com/og.jpg",
-  description:
-    "Beautifully designed components that you can copy and paste into your apps. Accessible. Customizable. Open Source.",
+  name: "Assistant AI",
+  url: "https://essolami-portfolio.vercel.app/",
+  ogImage:
+    "https://essolami-portfolio.vercel.app/_next/image?url=%2Fimages%2Fsignature.png&w=640&q=75",
+  description: "A powerful AI Assistant with shadcn and nextjs Open Source.",
   links: {
-    twitter: "https://twitter.com/shadcn",
-    github: "https://github.com/shadcn-ui/ui",
+    website: "https://essolami-portfolio.vercel.app/about",
+    github: "https://github.com/essolami",
   },
+  keywords: ["nextjs", "shadcn", "ai assistant", "translator"],
 };
 
 export type SiteConfig = typeof siteConfig;
