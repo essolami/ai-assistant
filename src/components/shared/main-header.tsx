@@ -45,18 +45,6 @@ export function MainHeader() {
           </MenubarTrigger>
         </MenubarMenu>
       </div>
-      <div className="flex justify-center items-center gap-1 shadow-none">
-        <ModeToggle />
-        <Link
-          href={"https://github.com/essolami"}
-          target="_blank"
-          className="flex"
-        >
-          <Button variant="outline" size="icon">
-            <Github />
-          </Button>
-        </Link>
-      </div>
     </Menubar>
   );
 }

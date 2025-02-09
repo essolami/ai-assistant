@@ -87,4 +87,9 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+  textarea:focus,
+  button:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
 }
