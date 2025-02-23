@@ -1,39 +1,20 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useAnthropic, useOpenAi } from "@/hooks/use-ai-modals";
-import { useToast } from "@/hooks/use-toast";
-
 import { RotateCcw } from "lucide-react";
 import { useState } from "react";
+import { useOpenAi } from "@/hooks/use-ai-modals";
+import { useClipboard } from "@/hooks/use-clipboard";
 
 export default function Home() {
   const [prompt, setPrompt] = useState("");
   const [output, setOutput] = useState("");
-  const { toast } = useToast();
-  let lolipopa = "";
-  const { sendMessage: sendAnthropicMessage } = useAnthropic();
+
   const { sendMessage: sendOpenaiMessage } = useOpenAi();
-
-  const copyText = () => {
-    navigator.clipboard.writeText(output);
-    toast({
-      description: "Your message has been sent.",
-    });
-  };
-
-  const useClaude = async () => {
-    try {
-      const response = await sendAnthropicMessage({
-        messages: [],
-      });
-      console.log(response);
-    } catch (err) {
-      console.error("Failed to send message:", err);
-    }
-  };
+  const { copyText } = useClipboard();
 
   const useChatgpt = async () => {
+    let lolipopa = "";
     try {
       await sendOpenaiMessage({
         messages: [
@@ -65,7 +46,6 @@ export default function Home() {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
           />
-          <Button onClick={useClaude}>useAnthropic</Button>
           <div className="flex gap-2">
             <Button onClick={useChatgpt} disabled={!prompt.length}>
               Submit
@@ -85,15 +65,22 @@ export default function Home() {
             className="h-full bg-gray-600"
             disabled
             value={output}
-            // onChange={(e) => setOutput(e.target.value)}
           />
           <div className="flex gap-2 place-self-end">
             <Button
               variant="secondary"
-              disabled={!output.length}
-              onClick={() => copyText()}
+              disabled={!prompt.length}
+              onClick={() => copyText(prompt)}
             >
               Copy
+            </Button>
+            <Button
+              variant={"ghost"}
+              onClick={() => {
+                throw new Error("Parameter is not a number!");
+              }}
+            >
+              Throw an error
             </Button>
           </div>
         </div>
