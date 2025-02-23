@@ -5,19 +5,15 @@ import { useAnthropic, useOpenAi } from "@/hooks/use-ai-modals";
 import { useToast } from "@/hooks/use-toast";
 
 import { RotateCcw } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Home() {
   const [prompt, setPrompt] = useState("");
-  // const [output, setOutput] = useState("");
-  //
+  const [output, setOutput] = useState("");
   const { toast } = useToast();
+  let lolipopa = "";
   const { sendMessage: sendAnthropicMessage } = useAnthropic();
-  const { sendMessage: sendOpenaiMessage, output } = useOpenAi();
-
-  useEffect(() => {
-    console.log(output);
-  }, [output]);
+  const { sendMessage: sendOpenaiMessage } = useOpenAi();
 
   const copyText = () => {
     navigator.clipboard.writeText(output);
@@ -46,6 +42,13 @@ export default function Home() {
             content: `please make a simple and short reformulation for ${prompt}`,
           },
         ],
+        options: {
+          onStream: (chunk: string) => {
+            lolipopa += chunk;
+            console.log(lolipopa);
+            setOutput(lolipopa);
+          },
+        },
       });
     } catch (err) {
       console.error("Failed to send message:", err);

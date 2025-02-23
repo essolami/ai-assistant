@@ -44,10 +44,8 @@ export function useAnthropic() {
 export function useOpenAi() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [output, setOutput] = useState("");
 
   const sendMessage = useCallback(async ({ messages, options = {} }) => {
-    setOutput("");
     setIsLoading(true);
     setError(null);
 
@@ -68,11 +66,17 @@ export function useOpenAi() {
         messages,
       });
 
+      let fullResponse = "";
+
       for await (const chunk of response) {
         const res = chunk.choices[0]?.delta?.content || "";
-        setOutput((prev) => prev + res);
-        return output;
+        fullResponse += res;
+        // Return response progressively
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        options.onStream && options.onStream(res);
       }
+
+      return fullResponse;
     } catch (err) {
       setError(err.message);
       throw err;
@@ -82,7 +86,6 @@ export function useOpenAi() {
   }, []);
 
   return {
-    output,
     sendMessage,
     isLoading,
     error,
