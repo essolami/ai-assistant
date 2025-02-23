@@ -1,15 +1,15 @@
 import Anthropic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
 
-let anthropicInstance = null;
-let openAiInstance = null;
+let anthropicInstance: Anthropic | null = null;
+let openAiInstance: OpenAI | null = null;
 
 export function getAnthropicClient() {
   if (!anthropicInstance) {
     const apiKey = process.env.ANTHROPIC_API_KEY || "";
 
     if (!apiKey) {
-      throw new Error("ANTHROPIC_API_KEY is not set in environment variables");
+      console.error("ANTHROPIC_API_KEY is not set in environment variables");
     }
 
     anthropicInstance = new Anthropic({
@@ -21,16 +21,16 @@ export function getAnthropicClient() {
   return anthropicInstance;
 }
 
-export function getOpenAiClient() {
+export function getOpenAiClient(baseURL: string) {
   if (!openAiInstance) {
     const apiKey = process.env.GITHUB_API_KEY || "";
 
     if (!apiKey) {
-      throw new Error("GITHUB_API_KEY is not set in environment variables");
+      console.error("GITHUB_API_KEY is not set in environment variables");
     }
 
     openAiInstance = new OpenAI({
-      baseURL: "https://models.inference.ai.azure.com",
+      baseURL,
       apiKey,
       dangerouslyAllowBrowser: true,
     });
