@@ -27,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/components/ui"
+    "src/components/ui",
+    "src/hooks/use-ai-modals.js"
   ],
   "exclude": ["node_modules"]
 }
