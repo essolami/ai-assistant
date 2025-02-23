@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useCallback } from "react";
 import { getAnthropicClient, getOpenAiClient } from "@/lib/ai-models-instances";
 
@@ -71,7 +70,7 @@ export function useOpenAi() {
       for await (const chunk of response) {
         const res = chunk.choices[0]?.delta?.content || "";
         fullResponse += res;
-        // Return response progressively
+
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         options.onStream && options.onStream(res);
       }
