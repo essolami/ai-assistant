@@ -1,4 +1,5 @@
 import { siteConfig } from "@/config/site";
+import { ShareLinkDialog } from "../dialog/shareLinkDialog";
 
 export function MainFooter() {
   return (
@@ -16,14 +17,14 @@ export function MainFooter() {
               Hamza Essolami
             </a>
             . The source code is available on{" "}
-            <a
-              href={siteConfig.links.github}
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium underline underline-offset-4"
+            <ShareLinkDialog
+              link={siteConfig.links.github}
+              dialogTitle="Share link"
             >
-              GitHub
-            </a>
+              <span className="font-medium underline underline-offset-4 cursor-pointer">
+                GitHub
+              </span>
+            </ShareLinkDialog>
             .
           </div>
         </div>

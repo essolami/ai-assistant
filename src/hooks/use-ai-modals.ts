@@ -84,20 +84,20 @@ export function useOpenAi(): UseAIResponse {
       setError(null);
 
       try {
-        const openAi = getOpenAiClient();
+        const openAi = getOpenAiClient("https://models.inference.ai.azure.com");
 
         const defaultOptions: SendMessageOptions = {
           model: "gpt-4o",
           temperature: 1,
           max_tokens: 4096,
           top_p: 1,
-          stream: true,
         };
 
         const response = await openAi.chat.completions.create({
           ...defaultOptions,
           ...options,
           messages,
+          stream: true,
         });
 
         let fullResponse = "";

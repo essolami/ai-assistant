@@ -74,14 +74,6 @@ export default function Home() {
             >
               Copy
             </Button>
-            <Button
-              variant={"ghost"}
-              onClick={() => {
-                throw new Error("Parameter is not a number!");
-              }}
-            >
-              Throw an error
-            </Button>
           </div>
         </div>
       </div>

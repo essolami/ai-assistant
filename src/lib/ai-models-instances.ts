@@ -1,8 +1,8 @@
 import Anthropic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
 
-let anthropicInstance: Anthropic | null = null;
-let openAiInstance: OpenAI | null = null;
+let anthropicInstance: Anthropic;
+let openAiInstance: OpenAI;
 
 export function getAnthropicClient() {
   if (!anthropicInstance) {
