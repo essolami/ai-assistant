@@ -7,6 +7,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { ReactElement } from "react";
 
 export function NavMain({
   items,
@@ -16,6 +17,7 @@ export function NavMain({
     url: string;
     icon: LucideIcon;
     isActive?: boolean;
+    children?: ReactElement;
   }[];
 }) {
   return (
@@ -23,10 +25,14 @@ export function NavMain({
       {items.map((item) => (
         <SidebarMenuItem key={item.title}>
           <SidebarMenuButton asChild isActive={item.isActive}>
-            <a href={item.url}>
-              <item.icon />
-              <span>{item.title}</span>
-            </a>
+            {item.children ? (
+              item.children
+            ) : (
+              <a href={item.url}>
+                <item.icon />
+                <span>{item.title}</span>
+              </a>
+            )}
           </SidebarMenuButton>
         </SidebarMenuItem>
       ))}

@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import {
-  AudioWaveform,
   Blocks,
   Calendar,
   Command,
@@ -26,6 +25,8 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { DialogCloseButton } from "../dialog/searchDialog";
+import { DialogTitle } from "../ui/dialog";
 
 // This is sample data.
 const data = {
@@ -41,6 +42,11 @@ const data = {
       title: "Search",
       url: "#",
       icon: Search,
+      children: (
+        <DialogCloseButton>
+          <p>Search</p>
+        </DialogCloseButton>
+      ),
     },
     {
       title: "Ask AI",
