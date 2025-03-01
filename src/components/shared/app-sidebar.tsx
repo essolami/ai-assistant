@@ -11,7 +11,7 @@ import {
   // Search,
   Settings2,
   Sparkles,
-  Trash2,
+  // Trash2,
 } from "lucide-react";
 
 // import { NavFavorites } from "@/components/ui/nav-favorites";
@@ -31,11 +31,11 @@ import {
 // This is sample data.
 const data = {
   navSecondary: [
-    {
-      title: "Trash",
-      url: "#",
-      icon: Trash2,
-    },
+    // {
+    //   title: "Trash",
+    //   url: "#",
+    //   icon: Trash2,
+    // },
     {
       title: "Help",
       url: "/help",

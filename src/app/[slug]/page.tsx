@@ -1,82 +1,125 @@
 "use client";
+import ComposeComponent from "@/components/features/compose";
+import CorrectionComponent from "@/components/features/correction";
+import ReformulationComponent from "@/components/features/reformulation";
+import TranslationComponent from "@/components/features/translation";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { RotateCcw } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  CheckCircle2,
+  Edit,
+  Languages,
+  MessageCircle,
+  RefreshCcw,
+} from "lucide-react";
 import { useState } from "react";
-import { useOpenAi } from "@/hooks/use-ai-modals";
-import { useClipboard } from "@/hooks/use-clipboard";
 
-export default function Home() {
-  const [prompt, setPrompt] = useState("");
-  const [output, setOutput] = useState("");
-
-  const { sendMessage: sendOpenaiMessage } = useOpenAi();
-  const { copyText } = useClipboard();
-
-  const useChatgpt = async () => {
-    let lolipopa = "";
-    try {
-      await sendOpenaiMessage({
-        messages: [
-          {
-            role: "user",
-            content: `please make a simple and short reformulation for ${prompt}`,
-          },
-        ],
-        options: {
-          onStream: (chunk: string) => {
-            lolipopa += chunk;
-            console.log(lolipopa);
-            setOutput(lolipopa);
-          },
-        },
-      });
-    } catch (err) {
-      console.error("Failed to send message:", err);
-    }
-  };
+const AIAssistantPage = () => {
+  const [results] = useState(null);
 
   return (
-    <>
-      <div className="flex w-full gap-2 h-full flex-col md:flex-row">
-        <div className="w-full h-1/2 flex flex-col gap-2 md:w-1/2 md:h-full ">
-          <Textarea
-            placeholder="Type your message here."
-            className="h-full"
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-          />
-          <div className="flex gap-2">
-            <Button onClick={useChatgpt} disabled={!prompt.length}>
-              Submit
-            </Button>
-            <Button
-              variant="secondary"
-              onClick={() => setPrompt("")}
-              disabled={!prompt.length}
-            >
-              <RotateCcw />
-            </Button>
-          </div>
+    <div className="container mx-auto py-6 max-w-5xl">
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">AI Assistant</h1>
+          <p className="text-muted-foreground">
+            Enhance your content with powerful AI tools
+          </p>
         </div>
-        <div className="w-full h-1/2 flex flex-col gap-2 md:w-1/2 md:h-full ">
-          <Textarea
-            placeholder=""
-            className="h-full bg-gray-600"
-            disabled
-            value={output}
-          />
-          <div className="flex gap-2 place-self-end">
-            <Button
-              variant="secondary"
-              disabled={!prompt.length}
-              onClick={() => copyText(prompt)}
+
+        <Tabs defaultValue="correction" className="w-full">
+          <TabsList className="grid grid-cols-4 mb-6">
+            <TabsTrigger value="correction" className="flex items-center gap-1">
+              <CheckCircle2 className="h-4 w-4" />
+              <span className="hidden sm:inline">Correction</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="translation"
+              className="flex items-center gap-1"
             >
-              Copy
-            </Button>
+              <Languages className="h-4 w-4" />
+              <span className="hidden sm:inline">Translation</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="reformulation"
+              className="flex items-center gap-1"
+            >
+              <RefreshCcw className="h-4 w-4" />
+              <span className="hidden sm:inline">Reformulation</span>
+            </TabsTrigger>
+            <TabsTrigger value="compose" className="flex items-center gap-1">
+              <Edit className="h-4 w-4" />
+              <span className="hidden sm:inline">Compose</span>
+            </TabsTrigger>
+          </TabsList>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <TabsContent value="correction" className="mt-0">
+                <CorrectionComponent />
+              </TabsContent>
+
+              <TabsContent value="translation" className="mt-0">
+                <TranslationComponent />
+              </TabsContent>
+
+              <TabsContent value="reformulation" className="mt-0">
+                <ReformulationComponent />
+              </TabsContent>
+
+              <TabsContent value="compose" className="mt-0">
+                <ComposeComponent />
+              </TabsContent>
+            </div>
+
+            <div>
+              <Card className="h-full">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <MessageCircle className="h-5 w-5 text-green-500" />
+                    Results
+                  </CardTitle>
+                  <CardDescription>
+                    Your AI-processed content will appear here
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="h-96 overflow-y-auto">
+                  {results ? (
+                    <div className="space-y-4">
+                      {/* Results would go here */}
+                      <p>Processed content would appear here...</p>
+                    </div>
+                  ) : (
+                    <div className="h-full flex flex-col items-center justify-center text-center p-6 text-muted-foreground">
+                      <MessageCircle className="h-10 w-10 mb-4 opacity-20" />
+                      <h3 className="font-medium mb-2">No Results Yet</h3>
+                      <p className="text-sm">
+                        Select one of the tools on the left and submit your
+                        content to see results here.
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+                <CardFooter className="flex justify-between border-t pt-4">
+                  <Button variant="outline">Copy</Button>
+                  <Button variant="outline">Download</Button>
+                  <Button variant="outline">Share</Button>
+                </CardFooter>
+              </Card>
+            </div>
           </div>
-        </div>
+        </Tabs>
       </div>
-    </>
+    </div>
   );
-}
+};
+
+export default AIAssistantPage;
