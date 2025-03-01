@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import Link from "next/link";
 
 export default function ContactPage() {
   return (
@@ -172,10 +173,10 @@ export default function ContactPage() {
               </p>
               <div className="grid grid-cols-2 gap-4">
                 <Button variant="outline" className="justify-start" asChild>
-                  <a href="/faq">Frequently Asked Questions</a>
+                  <Link href="/faq">Frequently Asked Questions</Link>
                 </Button>
                 <Button variant="outline" className="justify-start" asChild>
-                  <a href="/help">Help Center</a>
+                  <Link href="/help">Help Center</Link>
                 </Button>
               </div>
             </CardContent>
