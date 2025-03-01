@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
-import { getAnthropicClient, getOpenAiClient } from "@/lib/ai-models-instances";
+import { getOpenAiClient } from "@/lib/ai-models-instances";
+import { ChatCompletionCreateParams } from "openai/resources/chat/completions";
 
 type Message = {
   role: "system" | "user" | "assistant";
@@ -24,50 +25,6 @@ type UseAIResponse = {
   error: string | null;
 };
 
-export function useAnthropic(): UseAIResponse {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const sendMessage = useCallback(
-    async ({
-      messages,
-      options = {},
-    }: {
-      messages: Message[];
-      options?: SendMessageOptions;
-    }) => {
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        const anthropic = getAnthropicClient();
-
-        const defaultOptions: SendMessageOptions = {
-          model: "claude-3-haiku-20240307",
-          temperature: 0.7,
-          max_tokens: 150,
-        };
-
-        const completion = await anthropic.messages.create({
-          ...defaultOptions,
-          ...options,
-          messages,
-        });
-
-        return completion.content[0].text;
-      } catch (err) {
-        setError((err as Error).message);
-        throw err;
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    []
-  );
-
-  return { sendMessage, isLoading, error };
-}
-
 export function useOpenAi(): UseAIResponse {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -86,19 +43,25 @@ export function useOpenAi(): UseAIResponse {
       try {
         const openAi = getOpenAiClient("https://models.inference.ai.azure.com");
 
-        const defaultOptions: SendMessageOptions = {
+        const defaultOptions = {
           model: "gpt-4o",
           temperature: 1,
           max_tokens: 4096,
           top_p: 1,
         };
 
-        const response = await openAi.chat.completions.create({
+        // Create a properly typed request object
+        const requestOptions: ChatCompletionCreateParams = {
           ...defaultOptions,
-          ...options,
-          messages,
+          model: options.model || defaultOptions.model,
+          temperature: options.temperature ?? defaultOptions.temperature,
+          max_tokens: options.max_tokens ?? defaultOptions.max_tokens,
+          top_p: options.top_p ?? defaultOptions.top_p,
+          messages: messages,
           stream: true,
-        });
+        };
+
+        const response = await openAi.chat.completions.create(requestOptions);
 
         let fullResponse = "";
 
