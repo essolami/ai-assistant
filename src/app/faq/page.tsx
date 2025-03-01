@@ -1,4 +1,3 @@
-// pages/faq.jsx or app/faq/page.jsx depending on your Next.js routing
 import React from "react";
 import {
   Accordion,
