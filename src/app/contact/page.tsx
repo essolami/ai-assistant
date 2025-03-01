@@ -40,11 +40,11 @@ export default function ContactPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="firstName">First Name</Label>
-                    <Input id="firstName" placeholder="John" />
+                    <Input id="firstName" placeholder="Hamza" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="lastName">Last Name</Label>
-                    <Input id="lastName" placeholder="Doe" />
+                    <Input id="lastName" placeholder="Essolami" />
                   </div>
                 </div>
 
@@ -106,10 +106,10 @@ export default function ContactPage() {
                       For general inquiries and support
                     </p>
                     <a
-                      href="mailto:support@yourdomain.com"
+                      href="mailto:essolamih@gmail.com"
                       className="text-primary hover:underline"
                     >
-                      support@yourdomain.com
+                      essolamih@gmail.com
                     </a>
                   </div>
                 </div>
@@ -122,10 +122,10 @@ export default function ContactPage() {
                       Available Monday-Friday, 9am-6pm
                     </p>
                     <a
-                      href="tel:+11234567890"
+                      href="tel:+212694842344"
                       className="text-primary hover:underline"
                     >
-                      +1 (123) 456-7890
+                      +212 694842344
                     </a>
                   </div>
                 </div>
@@ -135,13 +135,11 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-medium">Office Address</h3>
                     <p className="text-sm">
-                      123 Tech Street
+                      123 Casablanca
                       <br />
-                      Suite 456
+                      Maarif 456
                       <br />
-                      San Francisco, CA 94103
-                      <br />
-                      United States
+                      Morocco
                     </p>
                   </div>
                 </div>

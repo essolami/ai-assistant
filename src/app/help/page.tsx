@@ -1,4 +1,4 @@
-// pages/help.jsx or app/help/page.jsx depending on your Next.js routing
+"use client";
 import React from "react";
 import Link from "next/link";
 import {

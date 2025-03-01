@@ -6,6 +6,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import Link from "next/link";
 
 export function NavWorkspaces({
   workspaces,
@@ -13,6 +14,7 @@ export function NavWorkspaces({
   workspaces: {
     name: string;
     emoji: React.ReactNode;
+    href: string;
   }[];
 }) {
   return (
@@ -23,10 +25,10 @@ export function NavWorkspaces({
           {workspaces.map((workspace) => (
             <SidebarMenuItem key={workspace.name}>
               <SidebarMenuButton asChild>
-                <a href="#">
+                <Link href={workspace.href}>
                   <span>{workspace.emoji}</span>
                   <span>{workspace.name}</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}

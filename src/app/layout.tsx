@@ -9,12 +9,12 @@ import {
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/shared/app-sidebar";
 import { Separator } from "@/components/ui/separator";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-} from "@/components/ui/breadcrumb";
+// import {
+//   Breadcrumb,
+//   BreadcrumbItem,
+//   BreadcrumbList,
+//   BreadcrumbPage,
+// } from "@/components/ui/breadcrumb";
 import { MainFooter } from "@/components/shared/main-footer";
 import { ModeToggle } from "@/components/shared/mode-toggle";
 import Link from "next/link";
@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Github } from "lucide-react";
 import { Toaster } from "@/components/ui/toaster";
 import { siteConfig } from "@/config/site";
+import DynamicHeader from "@/components/shared/dynamic-header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
   keywords: siteConfig.keywords,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -64,15 +65,7 @@ export default function RootLayout({
               <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
                 <SidebarTrigger className="-ml-1" />
                 <Separator orientation="vertical" className="mr-2 h-4" />
-                <Breadcrumb className="w-full">
-                  <BreadcrumbList>
-                    <BreadcrumbItem>
-                      <BreadcrumbPage className="line-clamp-1">
-                        Project Management & Task Tracking
-                      </BreadcrumbPage>
-                    </BreadcrumbItem>
-                  </BreadcrumbList>
-                </Breadcrumb>
+                <DynamicHeader />
                 <div className="flex justify-center items-center gap-1 shadow-none">
                   <ModeToggle />
                   <Link

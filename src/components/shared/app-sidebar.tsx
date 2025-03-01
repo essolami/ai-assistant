@@ -9,8 +9,8 @@ import {
   // Inbox,
   MessageCircleQuestion,
   // Search,
-  // Settings2,
-  // Sparkles,
+  Settings2,
+  Sparkles,
   Trash2,
 } from "lucide-react";
 
@@ -38,8 +38,18 @@ const data = {
     },
     {
       title: "Help",
-      url: "#",
+      url: "/help",
       icon: MessageCircleQuestion,
+    },
+    {
+      title: "FAQ",
+      url: "/faq",
+      icon: Settings2,
+    },
+    {
+      title: "Contact Us",
+      url: "/contact",
+      icon: Sparkles,
     },
   ],
 
@@ -47,38 +57,27 @@ const data = {
     {
       name: "Personal Life Management",
       emoji: "🏠",
-      pages: [
-        {
-          name: "Daily Journal & Reflection",
-          url: "#",
-          emoji: "📔",
-        },
-        {
-          name: "Health & Wellness Tracker",
-          url: "#",
-          emoji: "🍏",
-        },
-      ],
+      href: "/personal-life-management",
     },
     {
       name: "Professional Development",
       emoji: "💼",
-      pages: [],
+      href: "/professional-life-management",
     },
     {
       name: "Creative Projects",
       emoji: "🎨",
-      pages: [],
+      href: "/creative-life-management",
     },
     {
       name: "Home Management",
       emoji: "🏡",
-      pages: [],
+      href: "/home-life-management",
     },
     {
       name: "Travel & Adventure",
       emoji: "🧳",
-      pages: [],
+      href: "/travel-life-management",
     },
   ],
 };
