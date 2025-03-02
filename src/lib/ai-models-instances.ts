@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 let anthropicInstance: Anthropic;
 let openAiInstance: OpenAI;
@@ -37,4 +38,11 @@ export function getOpenAiClient(baseURL: string) {
   }
 
   return openAiInstance;
+}
+
+export function getGeminiClient() {
+  const apiKey = process.env.GEMINI_API_KEY || "";
+  const geminiInstance = new GoogleGenerativeAI(apiKey);
+
+  return geminiInstance;
 }

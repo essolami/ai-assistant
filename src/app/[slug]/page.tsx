@@ -23,10 +23,10 @@ import {
 import { useState } from "react";
 
 const AIAssistantPage = () => {
-  const [results] = useState(null);
+  const [results, setResults] = useState("");
 
   return (
-    <div className="container mx-auto py-6 max-w-5xl">
+    <div className="container mx-auto py-6 max-w-5xl max-h-[calc(100vh-173px)] overflow-y-scroll">
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">AI Assistant</h1>
@@ -64,7 +64,9 @@ const AIAssistantPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <TabsContent value="correction" className="mt-0">
-                <CorrectionComponent />
+                <CorrectionComponent
+                  setResults={(text: string) => setResults(text)}
+                />
               </TabsContent>
 
               <TabsContent value="translation" className="mt-0">
@@ -93,10 +95,7 @@ const AIAssistantPage = () => {
                 </CardHeader>
                 <CardContent className="h-96 overflow-y-auto">
                   {results ? (
-                    <div className="space-y-4">
-                      {/* Results would go here */}
-                      <p>Processed content would appear here...</p>
-                    </div>
+                    <div className="space-y-4">{results}</div>
                   ) : (
                     <div className="h-full flex flex-col items-center justify-center text-center p-6 text-muted-foreground">
                       <MessageCircle className="h-10 w-10 mb-4 opacity-20" />
@@ -110,8 +109,7 @@ const AIAssistantPage = () => {
                 </CardContent>
                 <CardFooter className="flex justify-between border-t pt-4">
                   <Button variant="outline">Copy</Button>
-                  <Button variant="outline">Download</Button>
-                  <Button variant="outline">Share</Button>
+                  <Button variant="outline">Save discussion</Button>
                 </CardFooter>
               </Card>
             </div>

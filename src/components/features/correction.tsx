@@ -1,5 +1,5 @@
 "use client";
-
+import parse from "html-react-parser";
 import React, { useState } from "react";
 import {
   Card,
@@ -22,22 +22,56 @@ import {
 } from "@/components/ui/select";
 
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
+// import { Switch } from "@/components/ui/switch";
 
 import { CheckCircle2 } from "lucide-react";
+import { useGemini } from "@/hooks/use-gemini";
 
-const CorrectionComponent = () => {
+type SupportedLanguage = "en" | "fr" | "es" | "de" | "it";
+
+const CorrectionComponent = ({
+  setResults,
+}: {
+  setResults: (text: string) => void;
+}) => {
   const [inputText, setInputText] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [formality, setFormality] = useState("standard");
+  const [language, setLanguage] = useState<SupportedLanguage>("en");
+  // const [explainChanges, setExplainChanges] = useState(false);
+  const [outputText] = useState("");
+
+  const { sendMessage } = useGemini();
 
   const handleSubmit = () => {
     if (!inputText.trim()) return;
+
+    // Create a mapping for language codes to names
+    const languageNames = {
+      en: "English",
+      fr: "French",
+      es: "Spanish",
+      de: "German",
+      it: "Italian",
+    };
+
+    // Create the prompt using state values
+    const prompt = `Please correct this text: "${inputText}"
+    
+    Follow these guidelines:
+    - Correct for grammar, spelling, and punctuation errors
+    - Use ${formality} formality level
+    - Language should be ${languageNames[language]}
+    - Return only the corrected text with no explanations"
+    `;
+
     setIsProcessing(true);
-    // Simulate API call
-    setTimeout(() => {
+
+    sendMessage(prompt, (text) => {
+      const cleanOutputText = text.replace(/^```html\s*|```$/g, "");
+      setResults(cleanOutputText);
       setIsProcessing(false);
-      // Process result
-    }, 1500);
+    });
   };
 
   return (
@@ -66,7 +100,10 @@ const CorrectionComponent = () => {
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="formality">Formality level</Label>
-            <Select defaultValue="standard">
+            <Select
+              defaultValue="standard"
+              onValueChange={(value) => setFormality(value)}
+            >
               <SelectTrigger id="formality">
                 <SelectValue placeholder="Select formality" />
               </SelectTrigger>
@@ -81,7 +118,10 @@ const CorrectionComponent = () => {
 
           <div className="space-y-2">
             <Label htmlFor="correction-language">Language</Label>
-            <Select defaultValue="en">
+            <Select
+              defaultValue="en"
+              onValueChange={(value) => setLanguage(value as SupportedLanguage)}
+            >
               <SelectTrigger id="correction-language">
                 <SelectValue placeholder="Select language" />
               </SelectTrigger>
@@ -96,10 +136,14 @@ const CorrectionComponent = () => {
           </div>
         </div>
 
-        <div className="flex items-center space-x-2">
-          <Switch id="explain-changes" />
+        {/* <div className="flex items-center space-x-2">
+          <Switch
+            id="explain-changes"
+            checked={explainChanges}
+            onCheckedChange={setExplainChanges}
+          />
           <Label htmlFor="explain-changes">Explain changes</Label>
-        </div>
+        </div> */}
       </CardContent>
       <CardFooter>
         <Button
@@ -117,6 +161,12 @@ const CorrectionComponent = () => {
           )}
         </Button>
       </CardFooter>
+      {outputText && (
+        <div className="mt-4 border rounded-md p-4 w-full">
+          <h3 className="text-lg font-medium mb-2">Corrected Text:</h3>
+          <div className="prose">{parse(outputText)}</div>
+        </div>
+      )}
     </Card>
   );
 };
