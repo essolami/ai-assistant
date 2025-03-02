@@ -17,24 +17,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-
 import { Languages, ArrowRight } from "lucide-react";
+import { useGemini } from "@/hooks/use-gemini";
+import { TranslationPrompt } from "@/consts/prompts";
 
-const TranslationComponent = () => {
+export type SupportedLanguage = "en" | "fr" | "es" | "de" | "it";
+
+type TranslationComponentProps = {
+  setResults: (text: string) => void;
+};
+
+const TranslationComponent = ({ setResults }: TranslationComponentProps) => {
   const [inputText, setInputText] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [language, setLanguage] = useState<SupportedLanguage>("fr");
+  const { sendMessage } = useGemini();
 
   const handleSubmit = () => {
     if (!inputText.trim()) return;
+    const prompt = TranslationPrompt(inputText, language);
     setIsProcessing(true);
-    // Simulate API call
-    setTimeout(() => {
+    sendMessage(prompt, (text) => {
+      const cleanOutputText = text.replace(/^```html\s*|```$/g, "");
+      setResults(cleanOutputText);
       setIsProcessing(false);
-      // Process result
-    }, 1500);
+    });
   };
 
   return (
@@ -54,7 +62,7 @@ const TranslationComponent = () => {
           <Textarea
             id="translation-input"
             placeholder="Enter your text here..."
-            className="min-h-32"
+            className="h-64"
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
           />
@@ -82,7 +90,10 @@ const TranslationComponent = () => {
 
           <div className="flex-1 space-y-2">
             <Label htmlFor="target-language">Target Language</Label>
-            <Select defaultValue="fr">
+            <Select
+              defaultValue="fr"
+              onValueChange={(value: SupportedLanguage) => setLanguage(value)}
+            >
               <SelectTrigger id="target-language">
                 <SelectValue placeholder="Select language" />
               </SelectTrigger>
@@ -99,27 +110,6 @@ const TranslationComponent = () => {
               </SelectContent>
             </Select>
           </div>
-        </div>
-
-        <div className="space-y-2">
-          <div className="flex justify-between">
-            <Label htmlFor="formality-level">Formality Level</Label>
-            <span className="text-xs text-muted-foreground">
-              Casual to Formal
-            </span>
-          </div>
-          <Slider
-            id="formality-level"
-            defaultValue={[50]}
-            max={100}
-            step={1}
-            className="py-2"
-          />
-        </div>
-
-        <div className="flex items-center space-x-2">
-          <Switch id="preserve-formatting" defaultChecked />
-          <Label htmlFor="preserve-formatting">Preserve formatting</Label>
         </div>
       </CardContent>
       <CardFooter>

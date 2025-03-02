@@ -70,15 +70,21 @@ const AIAssistantPage = () => {
               </TabsContent>
 
               <TabsContent value="translation" className="mt-0">
-                <TranslationComponent />
+                <TranslationComponent
+                  setResults={(text: string) => setResults(text)}
+                />
               </TabsContent>
 
               <TabsContent value="reformulation" className="mt-0">
-                <ReformulationComponent />
+                <ReformulationComponent
+                  setResults={(text: string) => setResults(text)}
+                />
               </TabsContent>
 
               <TabsContent value="compose" className="mt-0">
-                <ComposeComponent />
+                <ComposeComponent
+                // setResults={(text: string) => setResults(text)}
+                />
               </TabsContent>
             </div>
 
@@ -93,7 +99,7 @@ const AIAssistantPage = () => {
                     Your AI-processed content will appear here
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="h-96 overflow-y-auto">
+                <CardContent className="h-80 overflow-y-auto">
                   {results ? (
                     <div className="space-y-4">{results}</div>
                   ) : (

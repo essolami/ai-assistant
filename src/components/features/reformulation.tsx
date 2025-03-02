@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import {
   Card,
@@ -9,9 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 import { Button } from "@/components/ui/button";
-
 import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
@@ -22,21 +19,40 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
-
 import { RefreshCcw } from "lucide-react";
+import { SupportedLanguage } from "./translation";
+import { useGemini } from "@/hooks/use-gemini";
+import { ReformulationPrompt } from "@/consts/prompts";
 
-const ReformulationComponent = () => {
+const ReformulationComponent = ({
+  setResults,
+}: {
+  setResults: (text: string) => void;
+}) => {
+  const { sendMessage } = useGemini();
   const [inputText, setInputText] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [tone, setTone] = useState("friendly");
+  const [language, setLanguage] = useState<SupportedLanguage>("en");
+  const [length, setLength] = useState([50]);
+  const [format, setFormat] = useState("paragraph");
 
   const handleSubmit = () => {
     if (!inputText.trim()) return;
+
+    const prompt = ReformulationPrompt(
+      inputText,
+      tone,
+      language,
+      length,
+      format
+    );
     setIsProcessing(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsProcessing(false);
-      // Process result
-    }, 1500);
+    sendMessage(prompt, (text) => {
+      const cleanOutputText = text.replace(/^```html\s*|```$/g, "");
+      setResults(cleanOutputText);
+    });
+    setIsProcessing(false);
   };
 
   return (
@@ -65,7 +81,10 @@ const ReformulationComponent = () => {
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="tone">Tone</Label>
-            <Select defaultValue="professional">
+            <Select
+              defaultValue="professional"
+              onValueChange={(value) => setTone(value)}
+            >
               <SelectTrigger id="tone">
                 <SelectValue placeholder="Select tone" />
               </SelectTrigger>
@@ -83,7 +102,10 @@ const ReformulationComponent = () => {
 
           <div className="space-y-2">
             <Label htmlFor="ref-language">Language</Label>
-            <Select defaultValue="en">
+            <Select
+              defaultValue="en"
+              onValueChange={(value: SupportedLanguage) => setLanguage(value)}
+            >
               <SelectTrigger id="ref-language">
                 <SelectValue placeholder="Select language" />
               </SelectTrigger>
@@ -106,6 +128,7 @@ const ReformulationComponent = () => {
             </span>
           </div>
           <Slider
+            onValueChange={(value: number[]) => setLength(value)}
             id="output-length"
             defaultValue={[50]}
             max={100}
@@ -116,7 +139,10 @@ const ReformulationComponent = () => {
 
         <div className="space-y-2">
           <Label htmlFor="format">Output Format</Label>
-          <Select defaultValue="paragraph">
+          <Select
+            defaultValue="paragraph"
+            onValueChange={(value) => setFormat(value)}
+          >
             <SelectTrigger id="format">
               <SelectValue placeholder="Select format" />
             </SelectTrigger>
