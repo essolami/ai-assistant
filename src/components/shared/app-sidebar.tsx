@@ -55,29 +55,9 @@ const data = {
 
   workspaces: [
     {
-      name: "Personal Life Management",
+      name: "New Discussion",
       emoji: "🏠",
-      href: "/personal-life-management",
-    },
-    {
-      name: "Professional Development",
-      emoji: "💼",
-      href: "/professional-life-management",
-    },
-    {
-      name: "Creative Projects",
-      emoji: "🎨",
-      href: "/creative-life-management",
-    },
-    {
-      name: "Home Management",
-      emoji: "🏡",
-      href: "/home-life-management",
-    },
-    {
-      name: "Travel & Adventure",
-      emoji: "🧳",
-      href: "/travel-life-management",
+      href: "/new-discussion",
     },
   ],
 };

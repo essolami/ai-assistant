@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useClipboard } from "@/hooks/use-clipboard";
 import {
   CheckCircle2,
   Edit,
@@ -24,6 +25,7 @@ import { useState } from "react";
 
 const AIAssistantPage = () => {
   const [results, setResults] = useState("");
+  const { copyText } = useClipboard();
 
   return (
     <div className="container mx-auto py-6 max-w-5xl max-h-[calc(100vh-173px)] overflow-y-scroll">
@@ -83,7 +85,7 @@ const AIAssistantPage = () => {
 
               <TabsContent value="compose" className="mt-0">
                 <ComposeComponent
-                // setResults={(text: string) => setResults(text)}
+                  setResults={(text: string) => setResults(text)}
                 />
               </TabsContent>
             </div>
@@ -114,8 +116,10 @@ const AIAssistantPage = () => {
                   )}
                 </CardContent>
                 <CardFooter className="flex justify-between border-t pt-4">
-                  <Button variant="outline">Copy</Button>
-                  <Button variant="outline">Save discussion</Button>
+                  {/* <Button variant="outline">Save discussion</Button> */}
+                  <Button variant="outline" onClick={() => copyText(results)}>
+                    Copy
+                  </Button>
                 </CardFooter>
               </Card>
             </div>

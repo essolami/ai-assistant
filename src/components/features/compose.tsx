@@ -22,22 +22,45 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 
 import { Edit } from "lucide-react";
+import { SupportedLanguage } from "./translation";
+import { useGemini } from "@/hooks/use-gemini";
+import { ComposePrompt } from "@/consts/prompts";
 
-const ComposeComponent = () => {
-  const [prompt, setPrompt] = useState("");
+const ComposeComponent = ({
+  setResults,
+}: {
+  setResults: (text: string) => void;
+}) => {
+  const [inputText, setInputText] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
 
+  const [tone, setTone] = useState("professional");
+  const [language, setLanguage] = useState<SupportedLanguage>("en");
+  const [length, setLength] = useState([50]);
+  const [audience, setAudience] = useState("general");
+  const [contentType, setContentType] = useState("email");
+
+  const { sendMessage } = useGemini();
+
   const handleSubmit = () => {
-    if (!prompt.trim()) return;
+    if (!inputText.trim()) return;
+
+    const prompt = ComposePrompt(
+      inputText,
+      tone,
+      language,
+      length,
+      contentType,
+      audience
+    );
     setIsProcessing(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsProcessing(false);
-      // Process result
-    }, 1500);
+    sendMessage(prompt, (text) => {
+      const cleanOutputText = text.replace(/^```html\s*|```$/g, "");
+      setResults(cleanOutputText);
+    });
+    setIsProcessing(false);
   };
 
   return (
@@ -58,15 +81,18 @@ const ComposeComponent = () => {
             id="compose-input"
             placeholder="Describe what you want to create..."
             className="min-h-32"
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="content-type">Content Type</Label>
-            <Select defaultValue="email">
+            <Select
+              defaultValue="email"
+              onValueChange={(value) => setContentType(value)}
+            >
               <SelectTrigger id="content-type">
                 <SelectValue placeholder="Select type" />
               </SelectTrigger>
@@ -85,7 +111,10 @@ const ComposeComponent = () => {
 
           <div className="space-y-2">
             <Label htmlFor="comp-language">Language</Label>
-            <Select defaultValue="en">
+            <Select
+              defaultValue="en"
+              onValueChange={(value: SupportedLanguage) => setLanguage(value)}
+            >
               <SelectTrigger id="comp-language">
                 <SelectValue placeholder="Select language" />
               </SelectTrigger>
@@ -103,7 +132,10 @@ const ComposeComponent = () => {
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="comp-tone">Tone</Label>
-            <Select defaultValue="professional">
+            <Select
+              defaultValue="professional"
+              onValueChange={(value) => setTone(value)}
+            >
               <SelectTrigger id="comp-tone">
                 <SelectValue placeholder="Select tone" />
               </SelectTrigger>
@@ -121,7 +153,10 @@ const ComposeComponent = () => {
 
           <div className="space-y-2">
             <Label htmlFor="audience">Target Audience</Label>
-            <Select defaultValue="general">
+            <Select
+              defaultValue="general"
+              onValueChange={(value) => setAudience(value)}
+            >
               <SelectTrigger id="audience">
                 <SelectValue placeholder="Select audience" />
               </SelectTrigger>
@@ -145,17 +180,13 @@ const ComposeComponent = () => {
             </span>
           </div>
           <Slider
+            onValueChange={(value) => setLength(value)}
             id="content-length"
             defaultValue={[50]}
             max={100}
             step={1}
             className="py-2"
           />
-        </div>
-
-        <div className="flex items-center space-x-2">
-          <Switch id="include-examples" />
-          <Label htmlFor="include-examples">Include examples</Label>
         </div>
       </CardContent>
       <CardFooter>
