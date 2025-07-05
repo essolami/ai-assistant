@@ -35,7 +35,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AI Assistant",
+  title: "Enhance your content with powerful AI tools",
   description: siteConfig.description,
   authors: [
     { name: "Hamza Essolami", url: "https://essolami-portfolio.vercel.app/" },
