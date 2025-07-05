@@ -54,11 +54,11 @@ const data = {
   ],
 
   workspaces: [
-    {
-      name: "New Discussion",
-      emoji: "🏠",
-      href: "/new-discussion",
-    },
+    // {
+    //   name: "New Discussion",
+    //   emoji: "🏠",
+    //   href: "/new-discussion",
+    // },
   ],
 };
 

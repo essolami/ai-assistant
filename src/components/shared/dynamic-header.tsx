@@ -11,7 +11,8 @@ function DynamicHeader() {
   const pathname = usePathname();
 
   const getPageTitle = () => {
-    if (!pathname || pathname === "/") return "Dashboard";
+    if (!pathname || pathname === "/")
+      return "Enhance your content with powerful AI tools";
 
     const formattedPath = pathname.substring(1).replace(/-/g, " ");
 
